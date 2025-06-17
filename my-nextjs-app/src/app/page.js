@@ -273,7 +273,31 @@ export default function Home() {
           onResizeStart={onResizeStart}
           onCancelConnect={onCancelConnect}
           onChangeColor={changeNoteColor}
-        />
+        >
+          <div
+            onMouseDown={e => { e.stopPropagation(); onResizeStart(e, note.id); }}
+            onTouchStart={e => { e.stopPropagation(); onResizeStart(e, note.id); }}
+            style={{
+              position: 'absolute',
+              right: 4,
+              bottom: 4,
+              width: 28,
+              height: 28,
+              cursor: 'nwse-resize',
+              zIndex: 2,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'transparent',
+              border: 'none',
+              padding: 0,
+            }}
+            title="Resize"
+          >
+            {/* Inline SVG หรือไอคอน resize ของคุณ */}
+            {/* ...SVG... */}
+          </div>
+        </PostItNote>
       ))}
     </div>
   );
