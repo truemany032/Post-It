@@ -180,7 +180,7 @@ export default function PostItNote({
       {/* มุมจับสำหรับ resize */}
       <div
         onMouseDown={e => { e.stopPropagation(); onResizeStart(e, note.id); }}
-        onTouchStart={e => { e.stopPropagation(); onResizeStart(e, note.id); }}
+        onTouchStart={e => { e.stopPropagation(); e.preventDefault(); onResizeStart(e, note.id); }}
         style={{
           position: 'absolute',
           right: 4,

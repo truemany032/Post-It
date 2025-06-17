@@ -55,7 +55,18 @@ export default function Home() {
     e.preventDefault();
     setResizingId(id);
     const note = notes.find(n => n.id === id);
-    setResizeStart({ x: e.clientX, y: e.clientY, width: note.width, height: note.height });
+
+    // รองรับทั้ง mouse และ touch
+    let clientX, clientY;
+    if (e.touches && e.touches.length > 0) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    setResizeStart({ x: clientX, y: clientY, width: note.width, height: note.height });
   };
   const onMouseMove = (e) => {
     if (dragId) {
@@ -273,31 +284,7 @@ export default function Home() {
           onResizeStart={onResizeStart}
           onCancelConnect={onCancelConnect}
           onChangeColor={changeNoteColor}
-        >
-          <div
-            onMouseDown={e => { e.stopPropagation(); onResizeStart(e, note.id); }}
-            onTouchStart={e => { e.stopPropagation(); onResizeStart(e, note.id); }}
-            style={{
-              position: 'absolute',
-              right: 4,
-              bottom: 4,
-              width: 28,
-              height: 28,
-              cursor: 'nwse-resize',
-              zIndex: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'transparent',
-              border: 'none',
-              padding: 0,
-            }}
-            title="Resize"
-          >
-            {/* Inline SVG หรือไอคอน resize ของคุณ */}
-            {/* ...SVG... */}
-          </div>
-        </PostItNote>
+        />
       ))}
     </div>
   );
