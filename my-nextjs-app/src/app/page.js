@@ -218,6 +218,13 @@ export default function Home() {
     setResizingId(null);
   };
 
+  const onTouchStart = (e, id) => {
+    const touch = e.touches[0];
+    setDragId(id);
+    const note = notes.find(n => n.id === id);
+    setOffset({ x: touch.clientX - note.x, y: touch.clientY - note.y });
+  };
+
   return (
     <div
       style={{
