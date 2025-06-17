@@ -186,6 +186,38 @@ export default function Home() {
     </svg>
   );
 
+  const onTouchMove = (e) => {
+    if (dragId) {
+      const touch = e.touches[0];
+      setNotes(notes =>
+        notes.map(n =>
+          n.id === dragId
+            ? { ...n, x: touch.clientX - offset.x, y: touch.clientY - offset.y }
+            : n
+        )
+      );
+    }
+    if (resizingId) {
+      const touch = e.touches[0];
+      setNotes(notes =>
+        notes.map(n =>
+          n.id === resizingId
+            ? {
+                ...n,
+                width: Math.max(100, resizeStart.width + (touch.clientX - resizeStart.x)),
+                height: Math.max(60, resizeStart.height + (touch.clientY - resizeStart.y)),
+              }
+            : n
+        )
+      );
+    }
+  };
+
+  const onTouchEnd = () => {
+    setDragId(null);
+    setResizingId(null);
+  };
+
   return (
     <div
       style={{
@@ -197,6 +229,8 @@ export default function Home() {
       }}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       <button
         onClick={addNote}
@@ -223,6 +257,7 @@ export default function Home() {
           note={note}
           isDragging={dragId === note.id}
           onMouseDown={e => onMouseDown(e, note.id)}
+          onTouchStart={e => onTouchStart(e, note.id)}
           onEdit={editNote}
           onDelete={deleteNote}
           onStartConnect={startConnect}
